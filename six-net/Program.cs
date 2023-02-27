@@ -4,6 +4,7 @@ using six_net;
 using six_net.Data;
 using six_net.Interfaces;
 using six_net.Services;
+using static six_net.ConnectionHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +16,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ContestInterface, ContestService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
+builder.Services.AddDbContext<DataContext>(options => 
+{
+    options.UseNpgsql(GetConnectionString(builder.Configuration));
+});
 
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 
 await DataHelper.ManageDataAsync(scope.ServiceProvider);
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
