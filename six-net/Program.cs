@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using six_net;
 using six_net.Data;
 using six_net.Interfaces;
 using six_net.Services;
@@ -14,9 +15,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ContestInterface, ContestService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Host=containers-us-west-72.railway.app:7297;Username=postgres;Password=1kTOkH7pHCyhpI9fpEvB;Database=railway")));
+builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+
+await DataHelper.ManageDataAsync(scope.ServiceProvider);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
