@@ -2,7 +2,7 @@
 
 namespace six_net.Models
 {
-    public class Contest
+    public class ContestModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

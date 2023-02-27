@@ -7,7 +7,7 @@ namespace six_net.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Contest> Contests => Set<Contest>();
+        public DbSet<ContestModel> Contests => Set<ContestModel>();
 
     }
 }
